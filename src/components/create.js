@@ -6,6 +6,7 @@ import array from "./array";
 import { Link, useNavigate } from "react-router-dom";
 
 function Create() {
+  const [item,setitem] = useState("");
   const [name, setname] = useState("");
   const [description, setdescription] = useState("");
   const [startdata, setstartdata] = useState("");
@@ -18,18 +19,29 @@ function Create() {
 
     // const ids = uuid()
     // const uni = ids.slice(0, 8)
+    const currentDate = new Date();
+    const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`;
 
-    const a = name,
+    const w = item,
+      a = name,
       b = description,
       c = startdata,
       d = enddata;
-    array.push({ Name: a, Description: b, StartData: c, EndData: d });
+    array.push({ Item: w,Name: a, Description: b, StartData: c, EndData: d, CreatedDate: formattedDate });
     history("/");
   };
 
   return (
     <div>
       <Form className="d-grid gap-2" style={{ margin: "15rem" }}>
+      <Form.Group className="mb-3" controllId="fromBasicName">
+          <Form.Control
+            onChange={(e) => setitem(e.target.value)}
+            type="text"
+            placeholder="Enter Item"
+            required
+          />
+        </Form.Group>
         <Form.Group className="mb-3" controllId="fromBasicName">
           <Form.Control
             onChange={(e) => setname(e.target.value)}
