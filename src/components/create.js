@@ -2,39 +2,45 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import array from "./array";
-// import { v4 as uuid } from "uuid";
 import { Link, useNavigate } from "react-router-dom";
 
 function Create() {
-  const [item,setitem] = useState("");
+  const [item, setitem] = useState("");
   const [name, setname] = useState("");
   const [description, setdescription] = useState("");
-  const [startdata, setstartdata] = useState("");
   const [enddata, setenddata] = useState("");
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   const history = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // const ids = uuid()
-    // const uni = ids.slice(0, 8)
-    const currentDate = new Date();
-    const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`;
+    // const currentDate = new Date();
+    // const formattedDate = currentDate.toLocaleDateString("en-GB"); // Format the date as "DD/MM/YY"
 
-    const w = item,
-      a = name,
-      b = description,
-      c = startdata,
-      d = enddata;
-    array.push({ Item: w,Name: a, Description: b, StartData: c, EndData: d, CreatedDate: formattedDate });
+    const newItem = {
+      Item: item,
+      Name: name,
+      Description: description,
+      EndData: enddata,
+    //   CreatedDate: formattedDate,
+    };
+
+    // Add the new item to the array
+    array.push(newItem);
+
+    // Save the updated array to localStorage
+    localStorage.setItem("userArray", JSON.stringify(array));
+
     history("/");
   };
 
   return (
     <div>
       <Form className="d-grid gap-2" style={{ margin: "15rem" }}>
-      <Form.Group className="mb-3" controllId="fromBasicName">
+        {/* ... Your existing Form inputs ... */}
+        <Form.Group className="mb-3" controllId="fromBasicName">
           <Form.Control
             onChange={(e) => setitem(e.target.value)}
             type="text"
@@ -60,7 +66,8 @@ function Create() {
         </Form.Group>
         <Form.Group className="mb-3" controllId="fromBasicStart-Data">
           <Form.Control
-            onChange={(e) => setstartdata(e.target.value)}
+            value={currentDate.toISOString().slice(0, 10)} // Convert to YYYY-MM-DD format
+            onChange={(e) => setCurrentDate(new Date(e.target.value))}
             type="text"
             placeholder="Enter Start-Data"
             required
@@ -74,11 +81,7 @@ function Create() {
             required
           />
         </Form.Group>
-        <Button
-          onClick={(e) => handleSubmit(e)}
-          variant="primary"
-          type="submit"
-        >
+        <Button onClick={handleSubmit} variant="primary" type="submit">
           Submit
         </Button>
         <Link className="d-grid gap-2" to="/">

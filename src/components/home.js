@@ -8,11 +8,12 @@ function Home() {
  
   const [isNewUserAdded, setIsNewUserAdded] = useState(false);
 
+
   // Function to mark an item as done
   const markAsDone = (name) => {
     if (!isNewUserAdded) {
       const index = array.findIndex((item) => item.Name === name);
-      if (index !== -1) {
+      if (index !== 1) {
         array[index].isDone = true;
       }
     }
