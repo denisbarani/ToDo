@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 function Home() {
  
   const [isNewUserAdded, setIsNewUserAdded] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const categories = ["All", "Web Developer", "Backend Developer", "Full-stack Developer"]; // Add more categories as needed
 
 
   // Function to mark an item as done
@@ -18,6 +20,10 @@ function Home() {
       }
     }
   };
+  const filteredArray = array.filter((item) => {
+    if (selectedCategory === "All") return true; // Show all items when "All" is selected
+    return item.Description === selectedCategory;
+  });
 
   // Function to handle when a new user is added
   const handleNewUserAdded = () => {
@@ -26,6 +32,21 @@ function Home() {
 
   return (
     <div style={{ margin: "10rem" }}>
+           <div style={{ marginBottom: "1rem" }}>
+        <label htmlFor="category-select">Select Category:</label>
+        <select
+          id="category-select"
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          value={selectedCategory}
+        >
+          {/* Add more options based on your actual categories */}
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
       <Table striped bordered hover="sm">
         <thead>
           <tr>
@@ -38,7 +59,7 @@ function Home() {
           </tr>
         </thead>
         <tbody>
-          {array.map((item) => {
+          {filteredArray.map((item) => {
             return (
               <tr key={item.Name}>
                 <td>{item.Item}</td>

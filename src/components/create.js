@@ -24,6 +24,7 @@ function Create() {
       Name: name,
       Description: description,
       EndData: enddata,
+      currentDate : currentDate
     //   CreatedDate: formattedDate,
     };
 
