@@ -1,45 +1,44 @@
-import React, { useState } from "react";
-import { Button, Table } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import array from "./array";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react'
+import { Button, Table } from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import array from './array'
+import { Link } from 'react-router-dom'
 
 function Home() {
- 
-  const [isNewUserAdded, setIsNewUserAdded] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const categories = ["All", "Web Developer", "Backend Developer", "Full-stack Developer"]; // Add more categories as needed
+  const [isNewUserAdded, setIsNewUserAdded] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState('All')
+  const categories = [
+    'All',
+    'Web Developer',
+    'Backend Developer',
+    'Full-stack Developer',
+  ]
 
-
-  // Function to mark an item as done
   const markAsDone = (name) => {
     if (!isNewUserAdded) {
-      const index = array.findIndex((item) => item.Name === name);
+      const index = array.findIndex((item) => item.Name === name)
       if (index !== 1) {
-        array[index].isDone = true;
+        array[index].isDone = true
       }
     }
-  };
+  }
   const filteredArray = array.filter((item) => {
-    if (selectedCategory === "All") return true; // Show all items when "All" is selected
-    return item.Description === selectedCategory;
-  });
+    if (selectedCategory === 'All') return true
+    return item.Description === selectedCategory
+  })
 
-  // Function to handle when a new user is added
   const handleNewUserAdded = () => {
-    setIsNewUserAdded(true);
-  };
+    setIsNewUserAdded(true)
+  }
 
   return (
-    <div style={{ margin: "10rem" }}>
-           <div style={{ marginBottom: "1rem" }}>
+    <div style={{ margin: '10rem' }}>
+      <div style={{ marginBottom: '1rem' }}>
         <label htmlFor="category-select">Select Category:</label>
         <select
           id="category-select"
           onChange={(e) => setSelectedCategory(e.target.value)}
-          value={selectedCategory}
-        >
-          {/* Add more options based on your actual categories */}
+          value={selectedCategory}>
           {categories.map((category) => (
             <option key={category} value={category}>
               {category}
@@ -68,7 +67,6 @@ function Home() {
                 <td>{item.StartData}</td>
                 <td>{item.EndData}</td>
                 <td>
-                  {/* Render a button or checkbox to mark an item as done */}
                   {item.isDone ? (
                     <Button variant="success" disabled>
                       Done
@@ -77,16 +75,15 @@ function Home() {
                     <Button
                       variant="primary"
                       onClick={() => {
-                        markAsDone(item.Name);
-                        handleNewUserAdded();
-                      }}
-                    >
+                        markAsDone(item.Name)
+                        handleNewUserAdded()
+                      }}>
                       Mark as Done
                     </Button>
                   )}
                 </td>
               </tr>
-            );
+            )
           })}
         </tbody>
       </Table>
@@ -94,7 +91,7 @@ function Home() {
         <Button size="lg">Create</Button>
       </Link>
     </div>
-  );
+  )
 }
 
-export default Home;
+export default Home

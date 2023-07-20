@@ -1,46 +1,38 @@
-import React, { useState } from "react";
-import { Button, Form } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import array from "./array";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from 'react'
+import { Button, Form } from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import array from './array'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Create() {
-  const [item, setitem] = useState("");
-  const [name, setname] = useState("");
-  const [description, setdescription] = useState("");
-  const [enddata, setenddata] = useState("");
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [item, setitem] = useState('')
+  const [name, setname] = useState('')
+  const [description, setdescription] = useState('')
+  const [startdata, setstartdata] = useState('')
+  const [enddata, setenddata] = useState('')
 
-  const history = useNavigate();
+  const history = useNavigate()
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // const currentDate = new Date();
-    // const formattedDate = currentDate.toLocaleDateString("en-GB"); // Format the date as "DD/MM/YY"
+    e.preventDefault()
 
     const newItem = {
       Item: item,
       Name: name,
       Description: description,
+      StartData: startdata,
       EndData: enddata,
-      currentDate : currentDate
-    //   CreatedDate: formattedDate,
-    };
+    }
 
-    // Add the new item to the array
-    array.push(newItem);
+    array.push(newItem)
+    localStorage.setItem('userArray', JSON.stringify(array))
 
-    // Save the updated array to localStorage
-    localStorage.setItem("userArray", JSON.stringify(array));
-
-    history("/");
-  };
+    history('/')
+  }
 
   return (
     <div>
-      <Form className="d-grid gap-2" style={{ margin: "15rem" }}>
-        {/* ... Your existing Form inputs ... */}
+      <Form className="d-grid gap-2" style={{ margin: '15rem' }}>
         <Form.Group className="mb-3" controllId="fromBasicName">
           <Form.Control
             onChange={(e) => setitem(e.target.value)}
@@ -67,9 +59,8 @@ function Create() {
         </Form.Group>
         <Form.Group className="mb-3" controllId="fromBasicStart-Data">
           <Form.Control
-            value={currentDate.toISOString().slice(0, 10)} // Convert to YYYY-MM-DD format
-            onChange={(e) => setCurrentDate(new Date(e.target.value))}
-            type="text"
+            onChange={(e) => setstartdata(e.target.value)}
+            type="date"
             placeholder="Enter Start-Data"
             required
           />
@@ -77,7 +68,7 @@ function Create() {
         <Form.Group className="mb-3" controllId="fromBasicStart-Data">
           <Form.Control
             onChange={(e) => setenddata(e.target.value)}
-            type="text"
+            type="date"
             placeholder="Enter End-Data"
             required
           />
@@ -92,7 +83,7 @@ function Create() {
         </Link>
       </Form>
     </div>
-  );
+  )
 }
 
-export default Create;
+export default Create
