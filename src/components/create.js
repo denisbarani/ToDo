@@ -33,7 +33,7 @@ function Create() {
   return (
     <div>
       <Form className="d-grid gap-2" style={{ margin: '15rem' }}>
-        <Form.Group className="mb-3" controllId="fromBasicName">
+        <Form.Group className="mb-3">
           <Form.Control
             onChange={(e) => setitem(e.target.value)}
             type="text"
@@ -41,7 +41,7 @@ function Create() {
             required
           />
         </Form.Group>
-        <Form.Group className="mb-3" controllId="fromBasicName">
+        <Form.Group className="mb-3">
           <Form.Control
             onChange={(e) => setname(e.target.value)}
             type="text"
@@ -49,7 +49,7 @@ function Create() {
             required
           />
         </Form.Group>
-        <Form.Group className="mb-3" controllId="fromBasicDescription">
+        <Form.Group className="mb-3" >
           <Form.Control
             onChange={(e) => setdescription(e.target.value)}
             type="text"
@@ -57,7 +57,7 @@ function Create() {
             required
           />
         </Form.Group>
-        <Form.Group className="mb-3" controllId="fromBasicStart-Data">
+        <Form.Group className="mb-3" >
           <Form.Control
             onChange={(e) => setstartdata(e.target.value)}
             type="date"
@@ -65,7 +65,7 @@ function Create() {
             required
           />
         </Form.Group>
-        <Form.Group className="mb-3" controllId="fromBasicStart-Data">
+        <Form.Group className="mb-3" >
           <Form.Control
             onChange={(e) => setenddata(e.target.value)}
             type="date"

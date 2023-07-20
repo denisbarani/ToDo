@@ -19,7 +19,7 @@ function Home() {
   const markAsDone = (name) => {
     if (!isNewUserAdded) {
       const index = array.findIndex((item) => item.Name === name)
-      if (index !== 1) {
+      if (index !== index.Name) {
         array[index].isDone = true
       }
     }
