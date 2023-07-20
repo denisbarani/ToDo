@@ -38,8 +38,8 @@ function Edit() {
     setitem(localStorage.getItem('Item'))
     setname(localStorage.getItem('Name'))
     setdescription(localStorage.getItem('Description'))
-    setstartdata(localStorage.getItem('StartData'))
-    setenddata(localStorage.getItem('EndData'))
+    // setstartdata(localStorage.getItem('StartData'))
+    // setenddata(localStorage.getItem('EndData'))
   }, [])
 
   return (
@@ -71,17 +71,17 @@ function Edit() {
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Control
-            value={startdata}
+            // value={startdata}
             onChange={(e) => setstartdata(e.target.value)}
-            type="text"
+            type="date"
             placeholder="Enter Start-Data"
           />
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Control
-            value={enddata}
+            // value={enddata}
             onChange={(e) => setenddata(e.target.value)}
-            type="text"
+            type="date"
             placeholder="Enter End-Data"
           />
         </Form.Group>

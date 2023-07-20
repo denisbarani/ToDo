@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { Button, Table } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import array from './array'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Home() {
+  let history = useNavigate()
+
   const [isNewUserAdded, setIsNewUserAdded] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState('All')
   const categories = [
@@ -30,6 +32,22 @@ function Home() {
   const handleNewUserAdded = () => {
     setIsNewUserAdded(true)
   }
+  function setID(item, name, description, startdata, enddata) {
+    localStorage.setItem('Item', item)
+    localStorage.setItem('Name', name)
+    localStorage.setItem('Description', description)
+    localStorage.setItem('StartData', startdata)
+    localStorage.setItem('EndData', enddata)
+  }
+  function deleted(name) {
+    var index = array
+      .map(function (e) {
+        return e.Name
+      })
+      .indexOf(name)
+    array.splice(index, 1)
+    history('/')
+  }
 
   return (
     <div style={{ margin: '10rem' }}>
@@ -54,6 +72,8 @@ function Home() {
             <th>Description</th>
             <th>Start-data</th>
             <th>End-data</th>
+            <th>Edit</th>
+            <th>Delete</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -66,6 +86,28 @@ function Home() {
                 <td>{item.Description}</td>
                 <td>{item.StartData}</td>
                 <td>{item.EndData}</td>
+                <td>
+                  <Link to={`/edit`}>
+                    <Button
+                      onClick={(e) =>
+                        setID(
+                          item.Item,
+                          item.Name,
+                          item.Description,
+                          item.StartData,
+                          item.EndData
+                        )
+                      }
+                      variant="info">
+                      Update
+                    </Button>
+                  </Link>
+                </td>
+                <td>
+                  <Button onClick={(e) => deleted(item.Name)} variant="danger">
+                    Delete
+                  </Button>
+                </td>
                 <td>
                   {item.isDone ? (
                     <Button variant="success" disabled>
