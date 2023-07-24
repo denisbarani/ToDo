@@ -31,6 +31,14 @@
       "categories": "Remote",
       "startdata": "2023-07-24",
       "enddata": "2023-07-31"
+    },
+    {
+      "id": 5,
+      "name": "Emir Krasniqi",
+      "description": "HR",
+      "categories": "Office",
+      "startdata": "2023-07-24",
+      "enddata": "2023-07-31"
     }
   ]
 }

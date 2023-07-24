@@ -94,11 +94,13 @@ function Create() {
             required
           />
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <div>
+        <Button className="btn btn-primary btn-lg active" variant="primary" type="submit">
           Submit
         </Button>
-        <Link className="d-grid gap-2" to="/">
-          <Button variant="info" size="lg">
+        </div>
+        <Link to="/">
+          <Button  variant="warning" size="lg">
             Home
           </Button>
         </Link>

@@ -91,10 +91,17 @@ function Edit() {
             type="date"
           />
         </Form.Group>
-        <Button className="gap-2 sm" variant="primary" type="submit">
-          Update
-        </Button>
-        <Link className="d-grid gap-2" to="/">
+        <div>
+          <Button
+            class="btn btn-primary btn-lg active"
+            size="lg"
+            variant="primary"
+            type="submit"
+          >
+            Update
+          </Button>
+        </div>
+        <Link to="/">
           <Button variant="warning" size="lg">
             Home
           </Button>
