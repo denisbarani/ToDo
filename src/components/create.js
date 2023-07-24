@@ -9,7 +9,9 @@ function Create() {
   const [description, setdescription] = useState("");
   const [categories, setcategories] = useState("");
   // const [startdata, setstartdata] = useState("");
-  const [startdata, setstartdata] = useState(new Date().toISOString().slice(0, 10))
+  const [startdata, setstartdata] = useState(
+    new Date().toISOString().slice(0, 10)
+  );
   const [enddata, setenddata] = useState("");
 
   const history = useNavigate();
@@ -95,12 +97,16 @@ function Create() {
           />
         </Form.Group>
         <div>
-        <Button className="btn btn-primary btn-lg active" variant="primary" type="submit">
-          Submit
-        </Button>
+          <Button
+            className="btn btn-primary btn-lg active"
+            variant="primary"
+            type="submit"
+          >
+            Submit
+          </Button>
         </div>
         <Link to="/">
-          <Button  variant="warning" size="lg">
+          <Button variant="warning" size="lg">
             Home
           </Button>
         </Link>
