@@ -1,63 +1,67 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Form } from 'react-bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import array from './array'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from "react";
+import { Button, Form } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 function Edit() {
-  const [item, setitem] = useState('')
-  const [name, setname] = useState('')
-  const [description, setdescription] = useState('')
-  const [startdata, setstartdata] = useState('')
-  const [enddata, setenddata] = useState('')
-
-  let history = useNavigate()
-
-  var index = array
-    .map(function (e) {
-      return e.Name
-    })
-    .indexOf(name)
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (array[index]) {
-      const a = array[index]
-      a.Item = item
-      a.Name = name
-      a.Description = description
-      a.StartData = startdata
-      a.EndData = enddata
-    }
-    alert('Item has been updated successfully!')
-    console.log(name)
-    history('/')
-  }
+  const [id, setid] = useState("");
+  const [name, setname] = useState("");
+  const [description, setdescription] = useState("");
+  const [categories, setcategories] = useState("");
+  const [startdata, setstartdata] = useState("");
+  const [enddata, setenddata] = useState("");
+  const navigate = useNavigate();
+  const { empid } = useParams();
 
   useEffect(() => {
-    setitem(localStorage.getItem('Item'))
-    setname(localStorage.getItem('Name'))
-    setdescription(localStorage.getItem('Description'))
-    // setstartdata(localStorage.getItem('StartData'))
-    // setenddata(localStorage.getItem('EndData'))
-  }, [])
+    fetch("http://localhost:8000/employee/" + empid)
+      .then((res) => {
+        return res.json();
+      })
+      .then((resp) => {
+        setid(resp.id);
+        setname(resp.name);
+        setdescription(resp.description);
+        setcategories(resp.categories);
+        setstartdata(resp.startdata);
+        setenddata(resp.enddata);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
 
+  const handlesubmit = (e) => {
+    e.preventDefault();
+    const empdata = { id, name, description, categories, startdata, enddata };
+
+    fetch("http://localhost:8000/employee/" + empid, {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(empdata),
+    })
+      .then((res) => {
+        alert("Saved successfully");
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
   return (
     <div>
-      <Form className="d-grid gap-2" style={{ margin: '15rem' }}>
+      <Form
+        className="d-grid gap-2"
+        style={{ margin: "15rem" }}
+        onSubmit={handlesubmit}
+      >
         <Form.Group className="mb-3">
-          <Form.Control
-            value={item}
-            onChange={(e) => setitem(e.target.value)}
-            type="text"
-            placeholder="Enter Item"
-          />
+          <Form.Control value={id} disabled="disabled" type="text" />
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Control
             value={name}
             onChange={(e) => setname(e.target.value)}
-            type="text"
             placeholder="Enter Name"
           />
         </Form.Group>
@@ -65,32 +69,29 @@ function Edit() {
           <Form.Control
             value={description}
             onChange={(e) => setdescription(e.target.value)}
-            type="text"
-            placeholder="Enter Description"
           />
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Control
-            // value={startdata}
+            value={categories}
+            onChange={(e) => setcategories(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Control
+            value={startdata}
             onChange={(e) => setstartdata(e.target.value)}
             type="date"
-            placeholder="Enter Start-Data"
           />
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Control
-            // value={enddata}
+            value={enddata}
             onChange={(e) => setenddata(e.target.value)}
             type="date"
-            placeholder="Enter End-Data"
           />
         </Form.Group>
-        <Button
-          className="gap-2"
-          onClick={(e) => handleSubmit(e)}
-          variant="primary"
-          type="submit"
-          size="lg">
+        <Button className="gap-2 sm" variant="primary" type="submit">
           Update
         </Button>
         <Link className="d-grid gap-2" to="/">
@@ -100,6 +101,6 @@ function Edit() {
         </Link>
       </Form>
     </div>
-  )
+  );
 }
-export default Edit
+export default Edit;

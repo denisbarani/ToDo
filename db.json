@@ -1,0 +1,36 @@
+{
+  "employee": [
+    {
+      "id": 1,
+      "name": "Denis Barani",
+      "description": "Frontend Developer",
+      "categories": "Work",
+      "startdata": "2023-07-23",
+      "enddata": "2023-07-31"
+    },
+    {
+      "id": 2,
+      "name": "Edison Barani",
+      "description": "Web Developer",
+      "categories": "Office",
+      "startdata": "2023-07-23",
+      "enddata": "2023-07-31"
+    },
+    {
+      "id": 3,
+      "name": "Driton Barani",
+      "description": "Python Developer",
+      "categories": "Home",
+      "startdata": "2023-07-24",
+      "enddata": "2023-07-31"
+    },
+    {
+      "id": 4,
+      "name": "Florent Krasniqi",
+      "description": ".NET Developer",
+      "categories": "Remote",
+      "startdata": "2023-07-24",
+      "enddata": "2023-07-31"
+    }
+  ]
+}

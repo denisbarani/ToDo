@@ -1,68 +1,68 @@
-import React, { useState } from 'react'
-import { Button, Table } from 'react-bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import array from './array'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from "react";
+import { Button, Table } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Link, useNavigate } from "react-router-dom";
 
 function Home() {
-  let history = useNavigate()
+  const [empdata, empdatachange] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [markedUsers, setMarkedUsers] = useState([]);
+  const navigate = useNavigate();
 
-  const [isNewUserAdded, setIsNewUserAdded] = useState(false)
-  const [selectedCategory, setSelectedCategory] = useState('All')
-  const categories = [
-    'All',
-    'Web Developer',
-    'Backend Developer',
-    'Full-stack Developer',
-  ]
-
-  const markAsDone = (name) => {
-    if (!isNewUserAdded) {
-      const index = array.findIndex((item) => item.Name === name)
-      if (index !== index.Name) {
-        array[index].isDone = true
-      }
+  const markAsDone = (id) => {
+    if (!markedUsers.includes(id)) {
+      setMarkedUsers([...markedUsers, id]);
     }
-  }
-  const filteredArray = array.filter((item) => {
-    if (selectedCategory === 'All') return true
-    return item.Description === selectedCategory
-  })
-
-  const handleNewUserAdded = () => {
-    setIsNewUserAdded(true)
-  }
-  function setID(item, name, description, startdata, enddata) {
-    localStorage.setItem('Item', item)
-    localStorage.setItem('Name', name)
-    localStorage.setItem('Description', description)
-    localStorage.setItem('StartData', startdata)
-    localStorage.setItem('EndData', enddata)
-  }
-  function deleted(name) {
-    var index = array
-      .map(function (e) {
-        return e.Name
+  };
+  const filteredArray = empdata.filter((item) => {
+    const isSearchMatch =
+      searchTerm === "" ||
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.categories.toLowerCase().includes(searchTerm.toLowerCase());
+    return isSearchMatch;
+  });
+  const LoadUpdate = (empid) => {
+    navigate("/employee/edit/" + empid);
+  };
+  const Removefunction = (id) => {
+    if (window.confirm("Do you want to remove?")) {
+      fetch("http://localhost:8000/employee/" + id, {
+        method: "DELETE",
       })
-      .indexOf(name)
-    array.splice(index, 1)
-    history('/')
-  }
+        .then((res) => {
+          alert("Removed successfully.");
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
+  };
+  useEffect(() => {
+    fetch("http://localhost:8000/employee")
+      .then((res) => {
+        return res.json();
+      })
+      .then((resp) => {
+        empdatachange(resp);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
 
   return (
-    <div style={{ margin: '10rem' }}>
-      <div style={{ marginBottom: '1rem' }}>
-        <label htmlFor="category-select">Select Category:</label>
-        <select
-          id="category-select"
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          value={selectedCategory}>
-          {categories.map((category) => (
-            <option key={category} value={category}>
-              {category}
-            </option>
-          ))}
-        </select>
+    <div style={{ margin: "10rem" }}>
+      <div style={{ marginBottom: "1rem" }}>
+        <label htmlFor="category-select">Search:</label>
+        <input
+          className="md-form active-purple active-purple-2 mb-3"
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search here"
+        />
       </div>
       <Table striped bordered hover="sm">
         <thead>
@@ -70,6 +70,7 @@ function Home() {
             <th>Item</th>
             <th>Name</th>
             <th>Description</th>
+            <th>Categories</th>
             <th>Start-data</th>
             <th>End-data</th>
             <th>Edit</th>
@@ -78,62 +79,60 @@ function Home() {
           </tr>
         </thead>
         <tbody>
-          {filteredArray.map((item) => {
-            return (
-              <tr key={item.Name}>
-                <td>{item.Item}</td>
-                <td>{item.Name}</td>
-                <td>{item.Description}</td>
-                <td>{item.StartData}</td>
-                <td>{item.EndData}</td>
-                <td>
-                  <Link to={`/edit`}>
+          {filteredArray &&
+            filteredArray.map((item) => {
+              return (
+                <tr key={item.id}>
+                  <td>{item.id}</td>
+                  <td>{item.name}</td>
+                  <td>{item.description}</td>
+                  <td>{item.categories}</td>
+                  <td>{item.startdata}</td>
+                  <td>{item.enddata}</td>
+                  <td>
                     <Button
-                      onClick={(e) =>
-                        setID(
-                          item.Item,
-                          item.Name,
-                          item.Description,
-                          item.StartData,
-                          item.EndData
-                        )
-                      }
-                      variant="info">
+                      onClick={() => {
+                        LoadUpdate(item.id);
+                      }}
+                      className="btn btn-success"
+                    >
                       Update
                     </Button>
-                  </Link>
-                </td>
-                <td>
-                  <Button onClick={(e) => deleted(item.Name)} variant="danger">
-                    Delete
-                  </Button>
-                </td>
-                <td>
-                  {item.isDone ? (
-                    <Button variant="success" disabled>
-                      Done
-                    </Button>
-                  ) : (
+                  </td>
+                  <td>
                     <Button
-                      variant="primary"
-                      onClick={() => {
-                        markAsDone(item.Name)
-                        handleNewUserAdded()
-                      }}>
-                      Mark as Done
+                      onClick={() => Removefunction(item.id)}
+                      variant="danger"
+                    >
+                      Delete
                     </Button>
-                  )}
-                </td>
-              </tr>
-            )
-          })}
+                  </td>
+                  <td>
+                    {markedUsers.includes(item.id) ? (
+                      <Button variant="success" disabled>
+                        Done
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="primary"
+                        onClick={() => {
+                          markAsDone(item.id);
+                        }}
+                      >
+                        Mark as Done
+                      </Button>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </Table>
-      <Link className="gap-2" to="/create">
+      <Link className="gap-2" to="employee/create">
         <Button size="lg">Create</Button>
       </Link>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;
